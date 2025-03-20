@@ -4,96 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Superhéroe</title>
-    <link href="https://fonts.googleapis.com/css2?family=Sanctuary&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Sanctuary', sans-serif;
-            background-color: #f4f4f5;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 30px auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            font-size: 28px;
-            margin-bottom: 20px;
-            color: #222;
-            text-align: center;
-        }
-
-        .form-label {
-            font-size: 16px;
-            font-weight: 500;
-            color: #555;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-
-        .form-control:focus {
-            border-color: #007aff;
-            outline: none;
-            box-shadow: 0 0 4px rgba(0, 122, 255, 0.6);
-        }
-
-        .btn {
-            background-color: #007aff;
-            color: white;
-            padding: 12px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn:hover {
-            background-color: #005f8d;
-        }
-
-        .alert {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-        }
-
-        .alert ul {
-            margin: 0;
-            padding: 0;
-            list-style-type: none;
-        }
-
-        .alert li {
-            margin-bottom: 5px;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <div class="container">
-        <h1>Crear un Nuevo Superhéroe</h1>
+<body class="bg-dark text-light">
+    <div class="container py-5">
+        <h1 class="fw-bold mb-4">Crear Superhéroe</h1>
 
-        <!-- Mostrar errores de validación -->
         @if ($errors->any())
-            <div class="alert">
+            <div class="alert alert-danger">
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -102,74 +20,71 @@
             </div>
         @endif
 
-        <form action="{{ route('superheroes.store') }}" method="POST">
-            @csrf <!-- Token CSRF -->
+        <div class="card" style="background-color: #212529; border: 1px solid #495057; border-radius: 10px;">
+            <div class="card-body text-light">
+                <form action="{{ route('superheroes.store') }}" method="POST">
+                    @csrf
 
-            <!-- Nombre del Superhéroe -->
-            <div class="mb-3">
-                <label for="name" class="form-label">Nombre del Superhéroe</label>
-                <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required>
+                    <div class="mb-3">
+                        <label for="name" class="form-label text-light">Nombre del superhéroe</label>
+                        <input type="text" class="form-control bg-dark text-light border-secondary" id="name" name="name" placeholder="Nombre del superhéroe" value="{{ old('name') }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="real_name" class="form-label text-light">Nombre real</label>
+                        <input type="text" class="form-control bg-dark text-light border-secondary" id="real_name" name="real_name" placeholder="Nombre real" value="{{ old('real_name') }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="universe_id" class="form-label text-light">Universo</label>
+                        <select class="form-select bg-dark text-light border-secondary" id="universe_id" name="universe_id" required>
+                            <option value="">Seleccione un universo</option>
+                            @foreach ($universes as $universe)
+                                <option value="{{ $universe->id }}" {{ old('universe_id') == $universe->id ? 'selected' : '' }}>
+                                    {{ $universe->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="type_id" class="form-label text-light">Tipo</label>
+                        <select class="form-select bg-dark text-light border-secondary" id="type_id" name="type_id" required>
+                            <option value="">Seleccione un tipo</option>
+                            @foreach ($types as $type)
+                                <option value="{{ $type->id }}" {{ old('type_id') == $type->id ? 'selected' : '' }}>
+                                    {{ $type->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="gender_id" class="form-label text-light">Género</label>
+                        <select class="form-select bg-dark text-light border-secondary" id="gender_id" name="gender_id" required>
+                            <option value="">Seleccione un género</option>
+                            @foreach ($genders as $gender)
+                                <option value="{{ $gender->id }}" {{ old('gender_id') == $gender->id ? 'selected' : '' }}>
+                                    {{ $gender->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="powers" class="form-label text-light">Poderes</label>
+                        <textarea class="form-control bg-dark text-light border-secondary" id="powers" name="powers" rows="3" placeholder="Describe los poderes del superhéroe" required>{{ old('powers') }}</textarea>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">Crear Superhéroe</button>
+                        <a href="{{ route('superheroes.index') }}" class="btn btn-secondary ms-2">Cancelar</a>
+                    </div>
+                </form>
             </div>
-
-            <!-- Nombre Real -->
-            <div class="mb-3">
-                <label for="real_name" class="form-label">Nombre Real</label>
-                <input type="text" name="real_name" id="real_name" class="form-control" value="{{ old('real_name') }}" required>
-            </div>
-
-            <!-- Universo -->
-            <div class="mb-3">
-                <label for="universe_id" class="form-label">Universo</label>
-                <select name="universe_id" id="universe_id" class="form-control" required>
-                    <option value="">Selecciona un universo</option>
-                    @foreach($universes as $universe)
-                        <option value="{{ $universe->id }}" {{ old('universe_id') == $universe->id ? 'selected' : '' }}>
-                            {{ $universe->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <!-- Tipo de Superhéroe -->
-            <div class="mb-3">
-                <label for="type_id" class="form-label">Tipo de Superhéroe</label>
-                <select name="type_id" id="type_id" class="form-control" required>
-                    <option value="">Selecciona un tipo</option>
-                    @foreach($types as $type)
-                        <option value="{{ $type->id }}" {{ old('type_id') == $type->id ? 'selected' : '' }}>
-                            {{ $type->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <!-- Género -->
-            <div class="mb-3">
-                <label for="gender_id" class="form-label">Género</label>
-                <select name="gender_id" id="gender_id" class="form-control" required>
-                    <option value="">Selecciona un género</option>
-                    @foreach($genders as $gender)
-                        <option value="{{ $gender->id }}" {{ old('gender_id') == $gender->id ? 'selected' : '' }}>
-                            {{ $gender->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <!-- Poderes -->
-            <div class="mb-3">
-                <label for="powers" class="form-label">Poderes</label>
-                <textarea name="powers" id="powers" class="form-control" required>{{ old('powers') }}</textarea>
-            </div>
-
-            <!-- Afiliación -->
-            <div class="mb-3">
-                <label for="affiliation" class="form-label">Afiliación</label>
-                <input type="text" name="affiliation" id="affiliation" class="form-control" value="{{ old('affiliation') }}">
-            </div>
-
-            <button type="submit" class="btn">Crear Superhéroe</button>
-        </form>
+        </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

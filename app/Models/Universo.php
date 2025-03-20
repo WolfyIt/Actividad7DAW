@@ -13,10 +13,10 @@ class Universo extends Model
 
     protected $fillable = ['name', 'description'];
 
-    // Relación con Superhero
+    // Relación con Superhero (especificando el nombre correcto de la columna)
     public function superheroes()
     {
-        return $this->hasMany(Superhero::class);
+        return $this->hasMany(Superhero::class, 'universe_id');
     }
 }
 

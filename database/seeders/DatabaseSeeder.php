@@ -27,6 +27,5 @@ class DatabaseSeeder extends Seeder
             UniversoSeeder::class,
         ]);
 
-        Superhero::factory(100)->create();
     }
 }

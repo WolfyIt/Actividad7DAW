@@ -48,33 +48,55 @@ class UniverseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        // Aquí puedes agregar la lógica para mostrar un universo específico
+        // Añadir mensaje de depuración
+        \Log::info('ID recibido: ' . $id);
+        
+        // Buscar el universo con el ID proporcionado - sin cargar relaciones aún
+        $universe = Universo::findOrFail($id);
+        
+        // Añadir más información de depuración
+        \Log::info('Universo encontrado: ' . $universe->name);
+        
+        return view('universes.show', compact('universe'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        // Aquí puedes agregar la lógica para editar un universo específico
+        $universe = Universo::findOrFail($id);
+        return view('universes.edit', compact('universe'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        // Aquí puedes agregar la lógica para actualizar un universo específico
+        $universe = Universo::findOrFail($id);
+        
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+
+        $universe->update($validated);
+
+        return redirect()->route('universes.index')->with('success', 'Universe updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        // Aquí puedes agregar la lógica para eliminar un universo específico
+        $universe = Universo::findOrFail($id);
+        $universe->delete();
+        
+        return redirect()->route('universes.index')->with('success', 'Universe deleted successfully!');
     }
 }
 
