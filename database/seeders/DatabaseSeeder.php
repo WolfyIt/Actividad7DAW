@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             SuperheroTypeSeeder::class,
             GenderSeeder::class,
             UniversoSeeder::class,
+            SuperheroSeeder::class,
         ]);
 
     }

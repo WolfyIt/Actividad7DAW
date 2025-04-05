@@ -13,6 +13,14 @@ class SuperHeroType extends Model
     protected $table = 'superhero_types'; // Asegúrate de que coincida con la migración
 
     protected $fillable = ['name'];
+
+    /**
+     * Get the superheroes for the type.
+     */
+    public function superheroes()
+    {
+        return $this->hasMany(Superhero::class, 'type_id');
+    }
 }
 
 

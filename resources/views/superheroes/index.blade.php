@@ -1,70 +1,48 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Superhéroes</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .entity-card { 
-            background-color: #212529; 
-            border: 1px solid #495057; 
-            border-radius: 10px; 
-            transition: all 0.3s; 
-        }
-        .entity-card:hover { 
-            border-color: #0dcaf0; 
-            box-shadow: 0 4px 15px rgba(13, 202, 240, 0.3); 
-        }
-        .card-title { 
-            color: #fff; 
-            font-weight: bold; 
-        }
-        .card-text { 
-            color: #ced4da; 
-        }
-        .btn-action { 
-            margin: 0 5px; 
-        }
-    </style>
-</head>
-<body class="bg-dark text-light">
-    <div class="container py-5">
-        <div class="d-flex justify-content-between align-items-center mb-5">
-            <h1 class="fw-bold">Superhéroes</h1>
-            <a href="{{ route('superheroes.create') }}" class="btn btn-primary">+ Nuevo Superhéroe</a>
-        </div>
-
-        @if ($superheroes->isEmpty())
-            <div class="alert alert-dark text-center" role="alert">
-                No hay superhéroes registrados.
-            </div>
-        @else
-            <div class="row g-4">
-                @foreach ($superheroes as $superhero)
-                    <div class="col-md-4">
-                        <div class="card entity-card">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $superhero->name }}</h5>
-                                <p class="card-text">Nombre Real: {{ $superhero->real_name }}</p>
-                                <p class="card-text">Tipo: {{ $superhero->type->name ?? 'N/A' }}</p>
-                                <p class="card-text">Universo: {{ $superhero->universe->name ?? 'N/A' }}</p>
-                                <div class="mt-3">
-                                    <a href="{{ route('superheroes.show', $superhero->id) }}" class="btn btn-info btn-sm btn-action">Ver</a>
-                                    <a href="{{ route('superheroes.edit', $superhero->id) }}" class="btn btn-warning btn-sm btn-action">Editar</a>
-                                    <form action="{{ route('superheroes.destroy', $superhero->id) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm btn-action" onclick="return confirm('¿Seguro que deseas eliminar a {{ $superhero->name }}?')">Eliminar</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Superhéroes') }}
+        </h2>
+    </x-slot>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-medium text-gray-900">Lista de Superhéroes</h3>
+                        <a href="{{ route('superheroes.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">+ Nuevo Superhéroe</a>
                     </div>
-                @endforeach
+
+                    @if ($superheroes->isEmpty())
+                        <div class="bg-gray-100 border-l-4 border-gray-500 text-gray-700 p-4" role="alert">
+                            No hay superhéroes registrados.
+                        </div>
+                    @else
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            @foreach ($superheroes as $superhero)
+                                <div class="bg-white overflow-hidden shadow rounded-lg border">
+                                    <div class="px-4 py-5 sm:p-6">
+                                        <h3 class="text-lg font-medium text-gray-900">{{ $superhero->name }}</h3>
+                                        <p class="mt-1 text-sm text-gray-600">Nombre Real: {{ $superhero->real_name }}</p>
+                                        <p class="mt-1 text-sm text-gray-600">Tipo: {{ $superhero->type->name ?? 'N/A' }}</p>
+                                        <p class="mt-1 text-sm text-gray-600">Universo: {{ $superhero->universe->name ?? 'N/A' }}</p>
+                                        <p class="mt-1 text-sm text-gray-600">Género: {{ $superhero->gender->name ?? 'N/A' }}</p>
+                                        <div class="mt-4 flex space-x-3">
+                                            <a href="{{ route('superheroes.show', $superhero->id) }}" class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Ver</a>
+                                            <a href="{{ route('superheroes.edit', $superhero->id) }}" class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">Editar</a>
+                                            <form action="{{ route('superheroes.destroy', $superhero->id) }}" method="POST" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" onclick="return confirm('¿Estás seguro de que deseas eliminar este superhéroe?')">Eliminar</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
             </div>
-        @endif
+        </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+</x-app-layout>

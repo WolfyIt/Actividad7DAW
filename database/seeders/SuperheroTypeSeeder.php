@@ -13,6 +13,7 @@ class SuperheroTypeSeeder extends Seeder
             ['name' => 'Mutant'],
             ['name' => 'Alien'],
             ['name' => 'Human'],
+            ['name' => 'Villain'],
         ]);
     }
 }
