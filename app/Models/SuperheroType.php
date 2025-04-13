@@ -19,7 +19,7 @@ class SuperHeroType extends Model
      */
     public function superheroes()
     {
-        return $this->hasMany(Superhero::class, 'type_id');
+        return $this->hasMany(Superhero::class, 'superhero_type_id');
     }
 }
 

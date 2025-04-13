@@ -1,48 +1,31 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Género</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-dark text-light">
-    <div class="container py-5">
-        <h1 class="fw-bold mb-4">Editar Género</h1>
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Edit Gender') }}
+        </h2>
+    </x-slot>
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <form action="{{ route('genders.update', $gender->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
 
-        <div class="card" style="background-color: #212529; border: 1px solid #495057; border-radius: 10px;">
-            <div class="card-body text-light">
-                <form action="{{ route('genders.update', $gender->id) }}" method="POST">
-                    @csrf
-                    @method('PUT')
+                        <div class="mb-6">
+                            <x-input-label for="name" :value="__('Gender Name')" />
+                            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $gender->name)" required autofocus />
+                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="name" class="form-label text-light">Nombre</label>
-                        <input type="text" name="name" id="name" value="{{ old('name', $gender->name) }}" class="form-control bg-dark text-light border-secondary @error('name') is-invalid @enderror" required>
-                        @error('name')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="mt-4">
-                        <button type="submit" class="btn btn-warning">Actualizar</button>
-                        <a href="{{ route('genders.index') }}" class="btn btn-secondary ms-2">Cancelar</a>
-                    </div>
-                </form>
+                        <div class="flex items-center gap-4">
+                            <x-primary-button>{{ __('Update Gender') }}</x-primary-button>
+                            <a href="{{ route('genders.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">Cancel</a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html> 
+</x-app-layout>

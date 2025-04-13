@@ -17,35 +17,35 @@ class Superhero extends Model
     protected $fillable = [
         'name',
         'real_name',
-        'universe_id',
-        'type_id',
+        'description',
+        'universo_id',
         'gender_id',
+        'superhero_type_id',
         'powers',
-        'affiliation',
+        'affiliation'
     ];
 
     /**
-     * Get the universe that the superhero belongs to.
+     * Get the universe that owns the superhero.
      */
     public function universe()
     {
-        return $this->belongsTo(Universo::class, 'universe_id');  // Verifica que el campo 'universe_id' sea correcto
-    }
-
-
-    /**
-     * Get the type of the superhero.
-     */
-    public function type()
-    {
-        return $this->belongsTo(SuperheroType::class);
+        return $this->belongsTo(Universo::class, 'universo_id');
     }
 
     /**
-     * Get the gender of the superhero.
+     * Get the gender that owns the superhero.
      */
     public function gender()
     {
         return $this->belongsTo(Gender::class);
     }
-} 
+
+    /**
+     * Get the type that owns the superhero.
+     */
+    public function superheroType()
+    {
+        return $this->belongsTo(SuperHeroType::class, 'superhero_type_id');
+    }
+}

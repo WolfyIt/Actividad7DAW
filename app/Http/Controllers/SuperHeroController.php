@@ -12,7 +12,7 @@ class SuperheroController extends Controller
 {
     public function index()
     {
-        $superheroes = Superhero::all();
+        $superheroes = Superhero::with(['universe', 'gender', 'superheroType'])->get();
         return view('superheroes.index', compact('superheroes'));
     }
 
@@ -32,8 +32,9 @@ class SuperheroController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'real_name' => 'required|string|max:255',
-            'universe_id' => 'required|exists:universos,id',  // Cambia 'universes' por 'universos'
-            'type_id' => 'required|exists:superhero_types,id',
+            'description' => 'required|string',
+            'universo_id' => 'required|exists:universos,id',
+            'superhero_type_id' => 'required|exists:superhero_types,id',
             'gender_id' => 'required|exists:genders,id',
             'powers' => 'required|string',
             'affiliation' => 'nullable|string|max:255',
@@ -64,10 +65,12 @@ class SuperheroController extends Controller
     // Validar los datos enviados desde el formulario
     $validated = $request->validate([
         'name' => 'required|string|max:255',
+        'real_name' => 'required|string|max:255',
+        'description' => 'required|string',
         'powers' => 'required|string',
-        'origin' => 'nullable|string|max:255', // Incluye origin
-        'universe_id' => 'required|exists:universos,id',
-        'type_id' => 'required|exists:superhero_types,id',
+        'affiliation' => 'nullable|string|max:255',
+        'universo_id' => 'required|exists:universos,id',
+        'superhero_type_id' => 'required|exists:superhero_types,id',
         'gender_id' => 'required|exists:genders,id',
     ]);
 
